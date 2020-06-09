@@ -5,5 +5,5 @@ set(CMAKE_CXX_STANDARD 11)
 
 file(GLOB_RECURSE files "src/*.cpp")
 
-add_executable(tests ${files})
-target_link_libraries(tests PRIVATE numericalc)
+add_executable(numericalc-tests ${files})
+target_link_libraries(numericalc-tests PRIVATE numericalc)
