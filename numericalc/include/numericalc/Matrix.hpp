@@ -15,7 +15,49 @@ class Matrix
 private:
     std::vector<T> matrix;
     size_t rows, cols;
+
+    Matrix(size_t m, size_t n, std::vector<T> &&vec) : rows(m), cols(n), matrix(vec) {};
 public:
+
+    /**
+     * Class representing i-th row of the matrix.
+     */
+    class Row {
+        friend class Matrix;
+    private:
+        Matrix *matrixRef;
+        size_t i;
+        Row(Matrix &matrix, size_t i) : matrixRef(&matrix), i(i) {}
+
+    public:
+        /**
+         * Returns row as a matrix \f$1 \times M\f$.
+         *
+         * @return
+         */
+        Matrix asMatrix()
+        {
+            std::vector<T> row(matrixRef->matrix.begin() + i*matrixRef->cols, matrixRef->matrix.begin() + (i + 1) * matrixRef->cols);
+            return Matrix(1, matrixRef->cols, std::move(row));
+        }
+
+        /**
+         * Returns j-th element of the row
+         *
+         * @param j index
+         * @return j-th element
+         */
+        T &operator()(size_t j)
+        {
+            return matrixRef->matrix[i * matrixRef->cols + j];
+        }
+
+        const T &operator()(size_t j) const
+        {
+            return matrixRef->matrix[i * matrixRef->cols + j];
+        }
+    };
+
     /**
      * Constructs a new matrix \f$M \times N\f$.
      *
@@ -41,43 +83,81 @@ public:
     }
 
     /**
-     * Returns iterator at first element of i-th row.
+     * Returns the number of rows in the matrix.
      *
-     * Operator[] can be applied on the returned iterator to retrieve element
-     * at position (i, j).
-     *
-     * <pre>{@code
-     * Matrix A(3, 3);
-     * A[2][1] = 1.5;
-     * }</pre>
-     *
-     * @param i row index
-     * @return iterator at first element of i-th row
+     * @return number of rows
      */
-    typename std::vector<T>::iterator operator[](size_t i)
+    size_t get_rows()
     {
-        assert(i < rows);
-        return matrix.begin() + i * cols;
+        return rows;
     }
 
     /**
-     * Returns iterator at first element of i-th row.
+     * Returns the number of columns in the matrix.
      *
-     * Operator[] can be applied on the returned iterator to retrieve element
-     * at position (i, j).
-     *
-     * <pre>{@code
-     * const Matrix A(3, 3);
-     * std::cout << "A_{2,1} = " << A[2][1] << std::endl;
-     * }</pre>
+     * @return number of columns
+     */
+    size_t get_cols()
+    {
+        return cols;
+    }
+
+
+    /**
+     * Returns i-th row of the matrix.
      *
      * @param i row index
-     * @return iterator at first element of i-th row
+     * @return i-th row
      */
-    typename std::vector<T>::const_iterator operator[](size_t i) const // TODO: create custom iterator
+    Row operator()(size_t i)
     {
         assert(i < rows);
-        return matrix.begin() + i * cols;
+        return Row(*this, i);
+    }
+
+    /**
+     * Returns element at position i, j.
+     *
+     * @param i row
+     * @param j column
+     * @return element at i, j
+     */
+    T & operator()(size_t i, size_t j)
+    {
+        assert(i < rows && j < cols);
+        return matrix[i * cols + j];
+    }
+
+    const T & operator()(size_t i, size_t j) const
+    {
+        return matrix[i * cols + j];
+    }
+
+    /**
+     * Returns matrix with inverted elements. \f$A^\prime\f$ with elements \f$a^\prime_{i,j} = \frac{1}{a_{i,j}}\f$.
+     * Not to be misinterpreted as a matrix inverse \f$A^{-1}\f$.
+     *
+     * @return matrix with inverted elements.
+     */
+    Matrix invertElements()
+    {
+        Matrix result(rows, cols);
+        for(size_t i = 0; i < rows*cols; ++i)
+            result.matrix[i] = 1.0 / matrix[i];
+        return result;
+    }
+
+    /**
+     *
+     *
+     * @return matrix with negated elements.
+     */
+    Matrix operator-()
+    {
+        Matrix result(rows, cols);
+        for(size_t i = 0; i < rows*cols; ++i)
+            result.matrix[i] = -matrix[i];
+        return result;
     }
 
     /**
@@ -87,14 +167,12 @@ public:
      * @param lhs left hand side
      * @return sum
      */
-    Matrix operator+(Matrix &lhs) const
+    Matrix operator+(const Matrix &lhs) const
     {
         assert(rows == lhs.rows && cols == lhs.cols);
         Matrix result(rows, cols);
-
         for(size_t i = 0; i < rows*cols; ++i)
             result.matrix[i] = matrix[i] + lhs.matrix[i];
-
         return result;
     }
 
@@ -105,14 +183,12 @@ public:
      * @param lhs left hand side
      * @return difference
      */
-    Matrix operator-(Matrix &lhs) const
+    Matrix operator-(const Matrix &lhs) const
     {
         assert(rows == lhs.rows && cols == lhs.cols);
         Matrix result(rows, cols);
-
         for(size_t i = 0; i < rows*cols; ++i)
             result.matrix[i] = matrix[i] - lhs.matrix[i];
-
         return result;
     }
 
@@ -125,16 +201,14 @@ public:
      * @param lhs left hand side
      * @return product
      */
-    Matrix operator*(Matrix &lhs) const
+    Matrix operator*(const Matrix &lhs) const
     {
         assert(rows == lhs.cols);
         Matrix result(rows, lhs.cols);
-
         for(size_t i = 0; i < rows; ++i)
             for (size_t j = 0; j < lhs.cols; ++j)
                 for (size_t k = 0; k < cols; ++k)
                     result.matrix[lhs.cols * i + j] += matrix[cols * i + k] * lhs.matrix[lhs.cols * k + j];
-
         return result;
     }
 
@@ -148,10 +222,8 @@ public:
     Matrix operator*(U n) const
     {
         Matrix result(rows, cols);
-
         for(size_t i = 0; i < rows*cols; ++i)
             result.matrix[i] = n * matrix[i];
-
         return result;
     }
 
@@ -165,10 +237,8 @@ public:
     Matrix operator/(U n) const
     {
         Matrix<T> result(rows, cols);
-
         for(size_t i = 0; i < rows*cols; ++i)
             result.matrix[i] = matrix[i] / n;
-
         return result;
     }
 
@@ -176,11 +246,98 @@ public:
      * Applies function f on each element of the matrix.
      *
      * @param f function
+     * @return a new matrix
      */
-    void apply(T f(T))
+    Matrix function(T f(T))
+    {
+        Matrix<T> result(rows, cols);
+        for(size_t i = 0; i < rows*cols; ++i)
+            result.matrix[i] = f(matrix[i]);
+        return result;
+    }
+
+    /**
+     * Applies function f on each element on the diagonal of the square matrix.
+     *
+     * @param f function
+     * @return a new matrix
+     */
+    Matrix function_diag(T f(T))
+    {
+        Matrix<T> result(rows, cols);
+        for(size_t i = 0; i < rows; ++i)
+            result.matrix[i*cols + i] = f(matrix[i*cols + i]);
+        return result;
+    }
+
+    /**
+     * Applies function f on each element of the matrix.
+     *
+     * @param f function
+     * @return a new matrix
+     */
+    Matrix &apply(T f(T))
     {
         for(size_t i = 0; i < rows*cols; ++i)
             matrix[i] = f(matrix[i]);
+        return *this;
+    }
+
+    /**
+     * Applies function f on each element on the diagonal of the square matrix.
+     *
+     * @param f function
+     * @return a new matrix
+     */
+    Matrix &apply_diag(T f(T))
+    {
+        assert(rows == cols);
+        for(size_t i = 0; i < rows; ++i)
+            matrix[i*cols + i] = f(matrix[i*cols + i]);
+        return *this;
+    }
+
+    Matrix &operator+=(const Matrix & lhs)
+    {
+        *this = *this + lhs;
+        return *this;
+    }
+
+    Matrix &operator-=(const Matrix & lhs)
+    {
+        *this = *this - lhs;
+        return *this;
+    }
+
+    Matrix &operator*=(const Matrix & lhs)
+    {
+        *this = *this * lhs;
+        return *this;
+    }
+
+    template <typename U>
+    Matrix &operator*=(U n)
+    {
+        *this = *this * n;
+        return *this;
+    }
+
+    template <typename U>
+    Matrix &operator/=(U n)
+    {
+        *this = *this / n;
+        return *this;
+    }
+
+    /**
+     * Returns reference to vector which represents the matrix in the memory. The element at position i, j
+     * is stored at index {@code i * cols + j}.
+     *
+     * @return reference to the matrix vector
+     */
+    std::vector<T> &memory() const
+    {
+        return matrix;
     }
 
     /**
@@ -206,9 +363,9 @@ public:
 };
 
 template<typename T, typename U>
-Matrix<T> operator*(U n, Matrix<T> &matrix)
+Matrix<T> operator*(U n, const Matrix<T> &m)
 {
-    return matrix * n;
+    return m * n;
 }
 
 #endif //NUMERICALC_MATRIX_HPP
