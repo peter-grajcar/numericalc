@@ -19,6 +19,7 @@ int main()
 
     cout << "2A = " << endl << 2 * A << endl;
     cout << "-A = " << endl << -A << endl;
+    cout << "A^T = " << endl << A.transpose() << endl;
     cout << "A(1) = " << endl << A(1).asMatrix() << endl;
     cout << "A + B =" << endl << A + B << endl;
     cout << "A - B =" << endl << A - B << endl;

@@ -1,10 +1,11 @@
-#ifndef NUMERICALC_MATRIX_HPP
-#define NUMERICALC_MATRIX_HPP
+#ifndef NSMERICALC_MATRIX_HPP
+#define NSMERICALC_MATRIX_HPP
 
 #include <cstddef>
 #include <vector>
 #include <iostream>
 #include <iomanip>
+#include <algorithm>
 
 /**
  * Class representing a matrix.
@@ -13,12 +14,6 @@ template <typename T>
 class Matrix
 {
 private:
-    std::vector<T> matrix;
-    size_t rows, cols;
-
-    Matrix(size_t m, size_t n, std::vector<T> &&vec) : rows(m), cols(n), matrix(vec) {};
-public:
-
     /**
      * Class representing i-th row of the matrix.
      */
@@ -47,16 +42,59 @@ public:
          * @param j index
          * @return j-th element
          */
-        T &operator()(size_t j)
+        inline T &operator()(size_t j)
         {
             return matrixRef->matrix[i * matrixRef->cols + j];
         }
 
-        const T &operator()(size_t j) const
+        /**
+         * Returns j-th element of the row
+         *
+         * @param j index
+         * @return j-th element
+         */
+        inline const T &operator()(size_t j) const
         {
             return matrixRef->matrix[i * matrixRef->cols + j];
         }
+
+        /**
+         * Adds a multiple of one row to other.
+         *
+         * @tparam S scalar type
+         * @param lhs row to be added
+         * @param n multiple
+         */
+        template<typename S>
+        void add_multiple(const Row &lhs, S n)
+        {
+            assert(matrixRef == lhs.matrixRef);
+            size_t cols = matrixRef->cols;
+            for(size_t j = 0; j < cols; ++j)
+                matrixRef->matrix[i * cols + j] += n * lhs.matrixRef->matrix[i * cols + j];
+        }
+
+        /**
+         * Swaps rows a and b.
+         *
+         * @param a first row
+         * @param b second row
+         */
+        friend void swap(Row &a, Row &b)
+        {
+            assert(a.matrixRef == b.matrixRef);
+            size_t cols = a.matrixRef->cols;
+            for(size_t j = 0; j < cols; ++j)
+                std::swap(a.matrixRef->matrix[a.i * cols + j], a.matrixRef->matrix[b.i * cols + j]);
+        }
     };
+private:
+    std::vector<T> matrix;
+    size_t rows, cols;
+
+    Matrix(size_t m, size_t n, std::vector<T> &vec) : rows(m), cols(n), matrix(vec) {};
+    Matrix(size_t m, size_t n, std::vector<T> &&vec) : rows(m), cols(n), matrix(vec) {};
+public:
 
     /**
      * Constructs a new matrix \f$M \times N\f$.
@@ -87,7 +125,7 @@ public:
      *
      * @return number of rows
      */
-    size_t get_rows()
+    inline size_t get_rows() const
     {
         return rows;
     }
@@ -97,7 +135,7 @@ public:
      *
      * @return number of columns
      */
-    size_t get_cols()
+    inline size_t get_cols() const
     {
         return cols;
     }
@@ -116,19 +154,38 @@ public:
     }
 
     /**
+     * Returns i-th row of the matrix.
+     *
+     * @param i row index
+     * @return i-th row
+     */
+    Row operator()(size_t i) const
+    {
+        assert(i < rows);
+        return Row(*this, i);
+    }
+
+    /**
      * Returns element at position i, j.
      *
      * @param i row
      * @param j column
      * @return element at i, j
      */
-    T & operator()(size_t i, size_t j)
+    inline T & operator()(size_t i, size_t j)
     {
         assert(i < rows && j < cols);
         return matrix[i * cols + j];
     }
 
-    const T & operator()(size_t i, size_t j) const
+    /**
+     * Returns element at position i, j.
+     *
+     * @param i row
+     * @param j column
+     * @return element at i, j
+     */
+    inline const T & operator()(size_t i, size_t j) const
     {
         return matrix[i * cols + j];
     }
@@ -139,11 +196,25 @@ public:
      *
      * @return matrix with inverted elements.
      */
-    Matrix invertElements()
+    Matrix invertElements() const
     {
         Matrix result(rows, cols);
         for(size_t i = 0; i < rows*cols; ++i)
             result.matrix[i] = 1.0 / matrix[i];
+        return result;
+    }
+
+    /**
+     * Transposes the matrix. \f$A^T\f$
+     *
+     * @return transposed matrix
+     */
+    Matrix transpose()
+    {
+        Matrix result(cols, rows, matrix);
+        for(size_t i = 0; i < rows; ++i)
+            for(size_t j = 0; j < cols; ++j)
+                result.matrix[i *rows + j] = matrix[i*cols + j];
         return result;
     }
 
@@ -215,11 +286,12 @@ public:
     /**
      * Matrix multiplication with scalar.
      *
+     * @tparam S scalar type
      * @param n scalar
      * @return product
      */
-    template <typename U>
-    Matrix operator*(U n) const
+    template <typename S>
+    Matrix operator*(S n) const
     {
         Matrix result(rows, cols);
         for(size_t i = 0; i < rows*cols; ++i)
@@ -230,11 +302,12 @@ public:
     /**
      * Matrix division by scalar.
      *
+     * @tparam S scalar type
      * @param n scalar
      * @return quotient
      */
-    template <typename U>
-    Matrix operator/(U n) const
+    template <typename S>
+    Matrix operator/(S n) const
     {
         Matrix<T> result(rows, cols);
         for(size_t i = 0; i < rows*cols; ++i)
@@ -315,15 +388,15 @@ public:
         return *this;
     }
 
-    template <typename U>
-    Matrix &operator*=(U n)
+    template <typename S>
+    Matrix &operator*=(S n)
     {
         *this = *this * n;
         return *this;
     }
 
-    template <typename U>
-    Matrix &operator/=(U n)
+    template <typename S>
+    Matrix &operator/=(S n)
     {
         *this = *this / n;
         return *this;
@@ -362,10 +435,10 @@ public:
 
 };
 
-template<typename T, typename U>
-Matrix<T> operator*(U n, const Matrix<T> &m)
+template<typename T, typename S>
+Matrix<T> operator*(S n, const Matrix<T> &m)
 {
     return m * n;
 }
 
-#endif //NUMERICALC_MATRIX_HPP
+#endif //NSMERICALC_MATRIX_HPP
