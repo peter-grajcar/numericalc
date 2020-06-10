@@ -1,28 +1,23 @@
 #include <iostream>
-#include "numericalc/matrix.hpp"
+#include "numericalc/Matrix.hpp"
 using namespace std;
+
+using dMatrix = Matrix<double>;
 
 int main()
 {
-    Matrix A(2, 2);
-    Matrix B(2, 2);
-
+    dMatrix A(2, 2);
+    dMatrix B = dMatrix::identity(2);
 
     A[0][0] = 1;
     A[0][1] = 2;
     A[1][0] = 3;
     A[1][1] = 4;
 
-    B[0][0] = 1;
-    B[0][1] = 0;
-    B[1][0] = 0;
-    B[1][1] = 1;
-
-
     cout << "A = " << endl << A << endl;
     cout << "B = " << endl << B << endl;
 
-    cout << "A + B =" << endl << A + B << endl;
+    cout << "A * B =" << endl << A * B << endl;
 
     return 0;
 }

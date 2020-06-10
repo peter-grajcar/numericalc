@@ -1,3 +1,3 @@
-# Numericalc
+# NumeriCalc
 
 Numerical mathematics library
