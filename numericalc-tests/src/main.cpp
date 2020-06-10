@@ -1,5 +1,6 @@
 #include <iostream>
 #include "numericalc/Matrix.hpp"
+#include "numericalc/decomposition/lu.hpp"
 using namespace std;
 
 using dMatrix = Matrix<double>;
@@ -24,6 +25,8 @@ int main()
     cout << "A + B =" << endl << A + B << endl;
     cout << "A - B =" << endl << A - B << endl;
     cout << "A * B =" << endl << A * B << endl;
+
+    cout << "A = LU = " << endl << lu_decomposition(A) << endl;
 
     return 0;
 }
