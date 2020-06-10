@@ -5,6 +5,6 @@ set(CMAKE_CXX_STANDARD 11)
 
 file(GLOB_RECURSE files "src/*.cpp")
 
-add_library(numericalc STATIC ${files} src/Matrix.cpp include/numericalc/Matrix.hpp include/numericalc/decomposition/lu.hpp src/decomposition/lu.cpp)
+add_library(numericalc STATIC ${files} src/Matrix.cpp include/numericalc/Matrix.hpp include/numericalc/decomposition/lu.hpp src/decomposition/lu.cpp include/numericalc/norm/p_norm.hpp include/numericalc/norm/max_norm.hpp)
 
 target_include_directories(numericalc PUBLIC include)

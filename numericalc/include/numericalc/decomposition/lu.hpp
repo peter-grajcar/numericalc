@@ -15,7 +15,7 @@
  * Formulae for determining elements of LU matrix:
  * <ol>
  *      <li>\f$u_{m,j} = a_{m,j} - \sum^{m-1}_{k=1} l_{m,k} u_{k,j}\f$</li>
- *      <li>\f$l_{i,m} = \frac{1}{u_{m,m}}(a_{i,m} - \sum^{m-1}_{k=1} l_{i,k} u_{k,m})\f$</li>
+ *      <li>\f$l_{i,m} = \frac{1}{u_{m,m}} \left (a_{i,m} - \sum^{m-1}_{k=1} l_{i,k} u_{k,m} \right )\f$</li>
  * </ol>
  *
  * @tparam T matrix element type

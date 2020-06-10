@@ -105,6 +105,17 @@ public:
     Matrix(size_t m, size_t n) : rows(m), cols(n), matrix(m*n) {}
 
     /**
+     * Constructs a new matrix \f$M \times N\f$ with initial values.
+     *
+     * @param m rows
+     * @param n columns
+     * @param src initial values
+     */
+    Matrix(size_t m, size_t n, T src[]) : rows(m), cols(n), matrix(src, src + m*n) {
+        //assert((sizeof(src) / sizeof(src[0])) == m*n);
+    }
+
+    /**
      * Creates an identity matrix. Identity matrix is a matrix \f$N*N\f$ with ones on the diagonal.
      *
      * @param n size of the matrix
@@ -190,6 +201,12 @@ public:
         return matrix[i * cols + j];
     }
 
+    explicit operator double()
+    {
+        assert(rows == 1 && cols == 1);
+        return matrix[0];
+    }
+
     /**
      * Returns matrix with inverted elements. \f$A^\prime\f$ with elements \f$a^\prime_{i,j} = \frac{1}{a_{i,j}}\f$.
      * Not to be misinterpreted as a matrix inverse \f$A^{-1}\f$.
@@ -212,6 +229,7 @@ public:
     Matrix transpose()
     {
         Matrix result(cols, rows, matrix);
+        if(cols == 1 || rows == 1) return result;
         for(size_t i = 0; i < rows; ++i)
             for(size_t j = 0; j < cols; ++j)
                 result.matrix[i *rows + j] = matrix[i*cols + j];
@@ -408,7 +426,18 @@ public:
      *
      * @return reference to the matrix vector
      */
-    std::vector<T> &memory() const
+    std::vector<T> &memory()
+    {
+        return matrix;
+    }
+
+    /**
+     * Returns reference to vector which represents the matrix in the memory. The element at position i, j
+     * is stored at index {@code i * cols + j}.
+     *
+     * @return reference to the matrix vector
+     */
+    const std::vector<T> &memory() const
     {
         return matrix;
     }
@@ -423,7 +452,7 @@ public:
     friend std::ostream &operator<<(std::ostream &os, const Matrix &m)
     {
         for(size_t i = 0, j = 1; i < m.rows * m.cols; ++i, ++j) {
-            os << std::setprecision(2) << std::setw(6) <<  m.matrix[i];
+            os << std::setprecision(4) << std::setw(6) <<  m.matrix[i];
             if(j == m.cols)
             {
                 j = 0;
