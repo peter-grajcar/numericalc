@@ -9,7 +9,7 @@ add_subdirectory("numericalc-tests")
 # Doxygen setup
 find_package(Doxygen)
 if(DOXYGEN_FOUND)
-    set(DOXYGEN_CONFIG docs/doxygen-config.dox)
+    set(DOXYGEN_CONFIG docs/doxygen-config)
     add_custom_target(docs ALL
             COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_CONFIG}
             WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}

@@ -10,9 +10,6 @@
 #include <algorithm>
 
 template <typename T>
-T max_norm(const Matrix<T> &a)
-{
-    return *std::max_element(a.memory().begin(), a.memory().end());
-}
+T max_norm(const Matrix<T> &a);
 
 #endif //NUMERICALC_MAX_NORM_HPP
