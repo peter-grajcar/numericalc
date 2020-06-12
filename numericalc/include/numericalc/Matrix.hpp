@@ -307,20 +307,24 @@ public:
      * @param m matrix
      * @return output stream
      */
-    friend std::ostream &operator<<(std::ostream &os, const Matrix &m)
-    {
-        for(size_t i = 0, j = 1; i < m.rows * m.cols; ++i, ++j) {
-            os << std::setprecision(4) << std::setw(6) <<  m.matrix[i];
-            if(j == m.cols)
-            {
-                j = 0;
-                os << std::endl;
-            }
-        }
-        return os;
-    }
+    template <typename U>
+    friend std::ostream &operator<<(std::ostream &os, const Matrix<U> &m);
 
 };
+
+template <typename T>
+std::ostream &operator<<(std::ostream &os, const Matrix<T> &m)
+{
+    for(size_t i = 0, j = 1; i < m.rows * m.cols; ++i, ++j) {
+        os << std::setprecision(4) << std::setw(6) <<  m.matrix[i];
+        if(j == m.cols)
+        {
+            j = 0;
+            os << std::endl;
+        }
+    }
+    return os;
+}
 
 template <typename T>
 template <typename S>
