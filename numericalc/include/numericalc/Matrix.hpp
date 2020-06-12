@@ -340,7 +340,7 @@ template <typename T>
 template <typename S>
 Matrix<T> Matrix<T>::operator/(S n) const
 {
-    Matrix<T> result(rows, cols);
+    Matrix result(rows, cols);
     for(size_t i = 0; i < rows*cols; ++i)
         result.matrix[i] = matrix[i] / n;
     return result;

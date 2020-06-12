@@ -21,13 +21,25 @@ public:
      *
      * @param deg degree of the polynomial
      */
-    Polynomial(size_t deg) : deg(deg), coef(deg) {}
+    explicit Polynomial(size_t deg) : deg(deg), coef(deg) {}
 
     /**
      *
      * @param deg
      */
     Polynomial(size_t deg, const T coefs[]) : deg(deg), coef(coefs, coefs + deg) {}
+
+    /**
+     *
+     * @param coefs
+     */
+    explicit Polynomial(const std::vector<T> &coefs) : deg(coefs.size()), coef(coefs) {}
+
+    /**
+     *
+     * @param coefs
+     */
+    explicit Polynomial(const std::vector<T> &&coefs) : deg(coefs.size()), coef(coefs) {}
 
     /**
      *
@@ -43,7 +55,7 @@ public:
      * @param i
      * @return
      */
-    inline T &operator()(size_t i)
+    inline T &operator[](size_t i)
     {
         return coef[i];
     }
@@ -53,7 +65,7 @@ public:
      * @param i
      * @return
      */
-    inline const T &operator()(size_t i) const
+    inline const T &operator[](size_t i) const
     {
         return coef[i];
     }
@@ -64,7 +76,24 @@ public:
      * @param x x value
      * @return value of polynomial at x
      */
+    inline T operator()(T x) const
+    {
+        return eval(x);
+    }
+
+    /**
+     * Evaluates polynomial at x. Evaluation is done using Horner's schema.
+     *
+     * @param x x value
+     * @return value of polynomial at x
+     */
     T eval(T x) const;
+
+    /**
+     *
+     * @return
+     */
+    Polynomial derivative() const;
 
     /**
      *
@@ -93,6 +122,56 @@ public:
      */
     Polynomial operator*(const Polynomial &q) const;
 
+    /**
+     *
+     * @tparam S
+     * @param n
+     * @return
+     */
+    template <typename S>
+    Polynomial operator*(S n) const;
+
+    /**
+     *
+     * @tparam S
+     * @param n
+     * @return
+     */
+    template <typename S>
+    Polynomial operator/(S n) const;
+
+    Polynomial &operator+=(const Polynomial &q)
+    {
+        *this = *this + q;
+        return *this;
+    }
+
+    Polynomial &operator-=(const Polynomial &q)
+    {
+        *this = *this + q;
+        return *this;
+    }
+
+    Polynomial &operator*=(const Polynomial &q)
+    {
+        *this = *this + q;
+        return *this;
+    }
+
+    template <typename S>
+    Polynomial &operator*=(S n)
+    {
+        *this = *this * n;
+        return *this;
+    }
+
+    template <typename S>
+    Polynomial &operator/=(S n)
+    {
+        *this = *this / n;
+        return *this;
+    }
+
     template <typename U>
     friend std::ostream &operator<<(std::ostream &os, const Polynomial<U> &p);
 
@@ -112,6 +191,32 @@ std::ostream &operator<<(std::ostream &os, const Polynomial<T> &p)
         }
     }
     return os;
+}
+
+template <typename T>
+template <typename S>
+Polynomial<T> Polynomial<T>::operator*(S n) const
+{
+    Polynomial result(deg);
+    for(size_t i = 0; i < coef; ++i)
+        result.coef[i] = n * coef[i];
+    return result;
+}
+
+template <typename T>
+template <typename S>
+Polynomial<T> Polynomial<T>::operator/(S n) const
+{
+    Polynomial result(deg);
+    for(size_t i = 0; i < deg; ++i)
+        result.coef[i] = coef[i] / n;
+    return result;
+}
+
+template <typename T, typename S>
+Polynomial<T> operator*(S n, const Polynomial<T> &p)
+{
+    return p * n;
 }
 
 #endif //NUMERICALC_POLYNOMIAL_HPP
