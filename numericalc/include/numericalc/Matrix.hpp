@@ -14,11 +14,8 @@ template <typename T>
 class Matrix
 {
 private:
-    std::vector<T> matrix;
     size_t rows, cols;
-
-    Matrix(size_t m, size_t n, const std::vector<T> &vec) : rows(m), cols(n), matrix(vec) {};
-    Matrix(size_t m, size_t n, std::vector<T> &&vec) : rows(m), cols(n), matrix(vec) {};
+    std::vector<T> matrix;
 public:
 
     /**
@@ -39,6 +36,22 @@ public:
     Matrix(size_t m, size_t n, T src[]) : rows(m), cols(n), matrix(src, src + m*n) {
         //assert((sizeof(src) / sizeof(src[0])) == m*n);
     }
+
+    /**
+     *
+     * @param m
+     * @param n
+     * @param vec
+     */
+    Matrix(size_t m, size_t n, const std::vector<T> &vec) : rows(m), cols(n), matrix(vec) {};
+
+    /**
+     *
+     * @param m
+     * @param n
+     * @param vec
+     */
+    Matrix(size_t m, size_t n, std::vector<T> &&vec) : rows(m), cols(n), matrix(vec) {};
 
     /**
      * Creates an identity matrix. Identity matrix is a matrix \f$N*N\f$ with ones on the diagonal.

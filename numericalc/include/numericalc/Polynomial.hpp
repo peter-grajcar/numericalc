@@ -13,37 +13,41 @@ template <typename T>
 class Polynomial
 {
 private:
-    std::vector<T> coef;
     size_t deg;
+    std::vector<T> coef;
 public:
     /**
-     * Constructs a polynomial of certain degree.
+     * Constructs a zero polynomial of certain degree.
      *
      * @param deg degree of the polynomial
      */
     explicit Polynomial(size_t deg) : deg(deg), coef(deg) {}
 
     /**
+     * Constructs a polynomial with initial coefficients.
      *
-     * @param deg
+     * @param deg degree
+     * @param coefs initial coeffictients
      */
     Polynomial(size_t deg, const T coefs[]) : deg(deg), coef(coefs, coefs + deg) {}
 
     /**
+     * Constructs a polynomial with initial coefficients. Degree is determined from the coefficient vector.
      *
-     * @param coefs
+     * @param coefs initial coeffictients
      */
     explicit Polynomial(const std::vector<T> &coefs) : deg(coefs.size()), coef(coefs) {}
 
     /**
+     * Constructs a polynomial with initial coefficients. Degree is determined from the coefficient vector.
      *
-     * @param coefs
+     * @param coefs initial coeffictients
      */
     explicit Polynomial(const std::vector<T> &&coefs) : deg(coefs.size()), coef(coefs) {}
 
     /**
      *
-     * @return
+     * @return degree of polynomial
      */
     inline size_t degree() const
     {
@@ -51,9 +55,10 @@ public:
     }
 
     /**
+     * Returns i-th coefficient.
      *
-     * @param i
-     * @return
+     * @param i index
+     * @return i-th coefficient
      */
     inline T &operator[](size_t i)
     {
@@ -61,9 +66,10 @@ public:
     }
 
     /**
+     * Returns i-th coefficient.
      *
-     * @param i
-     * @return
+     * @param i index
+     * @return i-th coefficient
      */
     inline const T &operator[](size_t i) const
     {
@@ -90,35 +96,46 @@ public:
     T eval(T x) const;
 
     /**
+     * Returns first derivative of polynomial. Returned polynomial is of size \f$n - 1\f$ where \f$n\f$ is
+     * size of original polynomial.
      *
-     * @return
+     * @return first derivative of polynomial
      */
     Polynomial derivative() const;
 
     /**
+     * Polynomial negation.
      *
-     * @return
+     * @return negated polynomial
      */
     Polynomial operator-() const;
 
     /**
+     * Polynomial addition. Resulting polynomial always has size \f$max(m, n)\f$. No
+     * implicit zero trimming is done.
      *
-     * @param q
-     * @return
+     * @param q second polynomial
+     * @return sum
      */
     Polynomial operator+(const Polynomial &q) const;
 
     /**
+     * Polynomial subtraction. Resulting polynomial always has size \f$max(m, n)\f$. No
+     * implicit zero trimming is done.
      *
-     * @param q
-     * @return
+     * @param q second polynomial
+     * @return difference
      */
     Polynomial operator-(const Polynomial &q) const;
 
     /**
+     * \f$O(mn)\f$ polynomial multiplication. Resulting polynomial always has size \f$m + n\f$. No
+     * implicit zero trimming is done. For more effictient multiplication see Fast Fourier Transform (FFT)
+     * header file.
      *
-     * @param q
-     * @return
+     * @see fft Fast Fourier Transform
+     * @param q second polynomial
+     * @return polynomial product
      */
     Polynomial operator*(const Polynomial &q) const;
 
