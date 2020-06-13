@@ -85,8 +85,33 @@ Polynomial<std::complex<T>> fft_inv(const Polynomial<std::complex<T>> &p)
 template <typename T>
 Polynomial<T> fft_mult(const Polynomial<T> &p, const Polynomial<T> &q)
 {
- //TODO:
+    using complex = std::complex<T>;
+
+    size_t deg = 1;
+    while(deg < p.degree() + q.degree())
+        deg <<= 1;
+
+    Polynomial<complex> a(deg);
+    Polynomial<complex> b(deg);
+
+    for(size_t i = 0; i < p.degree(); ++i)
+        a[i] = complex(p[i]);
+    for(size_t i = 0; i < q.degree(); ++i)
+        b[i] = complex(q[i]);
+
+    a = fft(a);
+    b = fft(b);
+    for(size_t i = 0; i < deg; ++i)
+        a[i] *= b[i];
+    a = fft_inv(a);
+
+    Polynomial<T> r(deg);
+    for(size_t i = 0; i < deg; ++i)
+        r[i] = a[i].real();
+
+    return r;
 }
 
 template Polynomial<std::complex<double>> fft(const Polynomial<std::complex<double>> &p);
 template Polynomial<std::complex<double>> fft_inv(const Polynomial<std::complex<double>> &p);
+template Polynomial<double> fft_mult(const Polynomial<double> &p, const Polynomial<double> &q);

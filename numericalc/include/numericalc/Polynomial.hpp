@@ -217,14 +217,16 @@ public:
 template <typename T>
 std::ostream &operator<<(std::ostream &os, const Polynomial<T> &p)
 {
-    for(size_t i = 0; i < p.deg; ++i) {
+    size_t i = p.deg;
+    //while(p.coef[i--] == (T) 0)
+    //    /* nothing */;
+
+    while(i--) {
         const T c = p.coef[i];
-        if(i == 0) os << c;
-        else {
-            os << " + " << c;
-            if(i == 1)  os << "x";
-            else        os << "x^" << i;
-        }
+        os << c;
+        if(i == 0) break;
+        if(i == 1) os << "x + ";
+        else       os << "x^" << i << " + ";
     }
     return os;
 }
