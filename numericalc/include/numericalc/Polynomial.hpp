@@ -7,7 +7,8 @@
 /**
  * Class representing polynomial
  *
- * @tparam T coefficient type
+ * @tparam T polynomial type
+ * Copyright (c) 2020 Peter Grajcar
  */
 template <typename T>
 class Polynomial
@@ -52,6 +53,24 @@ public:
     inline size_t degree() const
     {
         return deg;
+    }
+
+    /**
+     *
+     * @return
+     */
+    inline std::vector<T> &coefficients()
+    {
+        return coef;
+    }
+
+    /**
+     *
+     * @return
+     */
+    inline const std::vector<T> &coefficients() const
+    {
+        return coef;
     }
 
     /**
@@ -133,7 +152,7 @@ public:
      * implicit zero trimming is done. For more effictient multiplication see Fast Fourier Transform (FFT)
      * header file.
      *
-     * @see fft Fast Fourier Transform
+     * @see dft Fast Fourier Transform
      * @param q second polynomial
      * @return polynomial product
      */
@@ -202,9 +221,9 @@ std::ostream &operator<<(std::ostream &os, const Polynomial<T> &p)
         const T c = p.coef[i];
         if(i == 0) os << c;
         else {
-            os << (c >= 0 ? " + " : " - ");
-            if(i == 1)  os << (c >= 0 ? c : -c) << "x";
-            else        os << (c >= 0 ? c : -c) << "x^" << i;
+            os << " + " << c;
+            if(i == 1)  os << "x";
+            else        os << "x^" << i;
         }
     }
     return os;

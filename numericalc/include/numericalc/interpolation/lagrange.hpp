@@ -2,6 +2,7 @@
  * Lagrange polynomial interpolation.
  *
  * @file lagrange.hpp
+ * Copyright (c) 2020 Peter Grajcar
  */
 #ifndef NUMERICALC_LAGRANGE_HPP
 #define NUMERICALC_LAGRANGE_HPP

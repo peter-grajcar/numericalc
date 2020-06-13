@@ -9,6 +9,9 @@
 
 /**
  * Class representing a matrix.
+ *
+ * @tparam matrix type
+ * Copyright (c) 2020 Peter Grajcar
  */
 template <typename T>
 class Matrix
