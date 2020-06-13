@@ -6,7 +6,7 @@
  */
 #include <complex>
 #include <cmath>
-#include "numericalc/fft/fft.hpp"
+#include "numericalc/dft/fft.hpp"
 
 template <typename T>
 Polynomial<std::complex<T>> fft_gen(const Polynomial<std::complex<T>> &p, bool inv)
@@ -14,6 +14,7 @@ Polynomial<std::complex<T>> fft_gen(const Polynomial<std::complex<T>> &p, bool i
     using complex = std::complex<T>;
 
     size_t deg = p.degree();
+    if(p.degree() < 2) return p;
     //degree has to be power of two
     assert((deg & (deg - 1)) == 0);
 

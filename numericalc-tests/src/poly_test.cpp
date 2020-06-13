@@ -2,6 +2,7 @@
 #include <iomanip>
 #include "numericalc/Polynomial.hpp"
 #include "numericalc/interpolation/lagrange.hpp"
+#include "numericalc/dft/dft.hpp"
 #include "numericalc/dft/fft.hpp"
 #include <cmath>
 
@@ -30,6 +31,8 @@ int poly_test()
     cout << "q              = " << setprecision(4) << fixed << q << endl;
     cout << "FFT(q)         = " << setprecision(4) << fixed << fft(q) << endl;
     cout << "FFT^-1(FFT(q)) = " << setprecision(4) << fixed << fft_inv(fft(q)) << endl;
+    cout << "DFT(q)         = " << setprecision(4) << fixed << dft(q) << endl;
+    cout << "DFT^-1(DFT(q)) = " << setprecision(4) << fixed << dft(dft_inv(q)) << endl;
 
     return 0;
 }
