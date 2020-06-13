@@ -1,4 +1,7 @@
-//
-// Created by Peter Grajcar on 12/06/2020.
-//
+/**
+ *
+ *
+ * @file steepest_descent.hpp
+ * Copyright (c) 2020 Peter Grajcar
+ */
 

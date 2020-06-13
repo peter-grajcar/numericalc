@@ -2,6 +2,7 @@
  * Includes p-norm and euclidean norm functions.
  *
  * @file p_norm.hpp
+ * Copyright (c) 2020 Peter Grajcar
  */
 #ifndef NUMERICALC_P_NORM_HPP
 #define NUMERICALC_P_NORM_HPP

@@ -1,5 +1,8 @@
 /**
- * Matrix implementation.
+ *
+ *
+ * @file Matrix.cpp
+ * Copyright (c) 2020 Peter Grajcar
  */
 #include "numericalc/Matrix.hpp"
 

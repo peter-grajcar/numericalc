@@ -1,7 +1,9 @@
-//
-// Created by Peter Grajcar on 12/06/2020.
-//
-
+/**
+ * Conjugate Gradient Method.
+ *
+ * @file conjugate.hpp
+ * Copyright (c) 2020 Peter Grajcar
+ */
 #ifndef NUMERICALC_CONJUGATE_HPP
 #define NUMERICALC_CONJUGATE_HPP
 

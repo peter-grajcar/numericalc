@@ -1,3 +1,9 @@
+/**
+ *
+ *
+ * @file fft.cpp
+ * Copyright (c) 2020 Peter Grajcar
+ */
 #include <complex>
 #include <cmath>
 #include "numericalc/fft/fft.hpp"

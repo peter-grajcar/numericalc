@@ -1,7 +1,9 @@
-//
-// Created by Peter Grajcar on 12/06/2020.
-//
-
+/**
+ * Steepest Descent Method.
+ *
+ * @file steepest_descent.hpp
+ * Copyright (c) 2020 Peter Grajcar
+ */
 #ifndef NUMERICALC_STEEPEST_DESCENT_HPP
 #define NUMERICALC_STEEPEST_DESCENT_HPP
 

@@ -1,5 +1,7 @@
-//
-// Created by Peter Grajcar on 12/06/2020.
-//
-
+/**
+ *
+ *
+ * @file conjugate.hpp
+ * Copyright (c) 2020 Peter Grajcar
+ */
 #include "numericalc/gradient/conjugate.hpp"

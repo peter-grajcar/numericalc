@@ -1,3 +1,9 @@
+/**
+ *
+ *
+ * @file p_norm.cpp
+ * Copyright (c) 2020 Peter Grajcar
+ */
 #include "numericalc/norm/p_norm.hpp"
 
 template <typename T, typename S>

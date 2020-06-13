@@ -1,7 +1,9 @@
-//
-// Created by Peter Grajcar on 12/06/2020.
-//
-
+/**
+ *
+ *
+ * @file euler.hpp
+ * Copyright (c) 2020 Peter Grajcar
+ */
 #ifndef NUMERICALC_EULER_HPP
 #define NUMERICALC_EULER_HPP
 

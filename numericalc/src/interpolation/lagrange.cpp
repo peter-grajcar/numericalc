@@ -1,3 +1,9 @@
+/**
+ *
+ *
+ * @file lagrange.cpp
+ * Copyright (c) 2020 Peter Grajcar
+ */
 #include "numericalc/interpolation/lagrange.hpp"
 
 /*

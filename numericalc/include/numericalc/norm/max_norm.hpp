@@ -2,6 +2,7 @@
  * Max norm.
  *
  * @file max_norm.hpp
+ * Copyright (c) 2020 Peter Grajcar
  */
 #ifndef NUMERICALC_MAX_NORM_HPP
 #define NUMERICALC_MAX_NORM_HPP

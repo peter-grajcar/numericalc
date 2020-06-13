@@ -1,7 +1,9 @@
-//
-// Created by Peter Grajcar on 12/06/2020.
-//
-
+/**
+ *
+ *
+ * @file power_method.hpp
+ * Copyright (c) 2020 Peter Grajcar
+ */
 #ifndef NUMERICALC_POWER_METHOD_HPP
 #define NUMERICALC_POWER_METHOD_HPP
 
