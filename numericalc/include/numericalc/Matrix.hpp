@@ -305,18 +305,18 @@ public:
      *
      * @return reference to the matrix vector
      */
-    std::vector<T> &memory()
+    std::vector<T> &elements()
     {
         return matrix;
     }
 
     /**
-     * Returns reference to vector which represents the matrix in the memory. The element at position i, j
+     * Returns reference to vector which contains the elements in the memory. The element at position i, j
      * is stored at index {@code i * cols + j}.
      *
      * @return reference to the matrix vector
      */
-    const std::vector<T> &memory() const
+    const std::vector<T> &elements() const
     {
         return matrix;
     }

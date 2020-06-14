@@ -6,6 +6,7 @@
 #include "numericalc/dft/fft.hpp"
 #include "numericalc/traits/compare_trait.hpp"
 #include <cmath>
+#include <complex>
 
 using namespace std;
 
@@ -45,11 +46,14 @@ int poly_test()
     cout << "p * r = " << fft_mult(p, r) << endl << endl;
 
     cout << "1   " << (compare_trait<int>::eq(1, 1) ? "= " : "!=") << " 1" << endl
-         << "1.0 " << (compare_trait<double>::eq(1.0, 1.0 - 1e-16) ? "= " : "!=") << " 1.0 - 1e-16" << endl
+         << "3.0 " << (compare_trait<double>::eq(3.0, 0) ? "= " : "!=") << " 0" << endl
          << "1   " << (compare_trait<int>::eq(1, 2) ? "= " : "!=") << " 2" << endl
+         << "1.0 " << (compare_trait<double>::eq(1.0, 1.00000000000000001) ? "= " : "!=") << " 1.00000000000000001" << endl
          << "1.0 " << (compare_trait<double>::eq(1.0, 1.00000001) ? "= " : "!=") << " 1.00000001" << endl;
 
-    cout << compare_trait<complex<double>>::eq(complex<double>(1, 1), complex<double>(1, 1)) << endl;
+    complex<double> z1(1.0, 1.0 - 1e-16);
+    complex<double> z2(1.0, 1.0);
+    cout << z1 << (compare_trait<complex<double>>::eq(z1, z2) ? " =  " : " != ") << z2 << endl;
 
     return 0;
 }

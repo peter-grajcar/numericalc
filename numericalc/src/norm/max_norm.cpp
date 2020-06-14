@@ -9,7 +9,7 @@
 template <typename T>
 T max_norm(const Matrix<T> &a)
 {
-    return *std::max_element(a.memory().begin(), a.memory().end());
+    return *std::max_element(a.elements().begin(), a.elements().end());
 }
 
 template double max_norm(const Matrix<double> &a);

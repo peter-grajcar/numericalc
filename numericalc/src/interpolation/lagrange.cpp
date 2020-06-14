@@ -75,7 +75,7 @@ Matrix<T> lagrange_polynomial_matrix(const std::vector<T> &grid)
 
     Polynomial<T> wd = w.derivative();
 
-    std::vector<T> &matrix = result.memory();
+    std::vector<T> &matrix = result.elements();
     for(size_t i = 0; i < n; ++i) {
         Polynomial<T> li = long_division(w, grid[i]) / wd(grid[i]);
         matrix.insert(matrix.begin() + i*n, li.coefficients().begin(), li.coefficients().end());

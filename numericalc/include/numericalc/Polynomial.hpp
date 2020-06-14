@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <iostream>
+#include "numericalc/traits/compare_trait.hpp"
 
 /**
  * Class representing polynomial
@@ -218,16 +219,17 @@ template <typename T>
 std::ostream &operator<<(std::ostream &os, const Polynomial<T> &p)
 {
     size_t i = p.deg;
-    //while(p.coef[i--] == (T) 0)
-    //    /* nothing */;
+    while(compare_trait<T>::eq(p.coef[--i], (T) 0))
+        /* nothing */;
 
-    while(i--) {
+    do {
         const T c = p.coef[i];
         os << c;
         if(i == 0) break;
         if(i == 1) os << "x + ";
         else       os << "x^" << i << " + ";
-    }
+    } while(i--);
+
     return os;
 }
 

@@ -11,7 +11,7 @@ T p_norm_pow(S p, const Matrix<T> &a)
 {
     assert(p >= 1);
     T sum = 0;
-    for(auto x : a.memory())
+    for(auto x : a.elements())
         sum += pow(abs(x), p);
     return sum;
 }
