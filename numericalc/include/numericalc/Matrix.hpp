@@ -117,10 +117,15 @@ public:
         return matrix[i * cols + j];
     }
 
-    explicit operator double()
+    explicit inline operator double()
     {
         assert(rows == 1 && cols == 1);
         return matrix[0];
+    }
+
+    explicit inline operator std::vector<T>()
+    {
+        return matrix;
     }
 
     /**
@@ -332,7 +337,7 @@ template <typename T>
 std::ostream &operator<<(std::ostream &os, const Matrix<T> &m)
 {
     for(size_t i = 0, j = 1; i < m.rows * m.cols; ++i, ++j) {
-        os << std::setprecision(4) << std::setw(6) <<  m.matrix[i];
+        os << std::setprecision(2) << std::setw(6) <<  m.matrix[i];
         if(j == m.cols)
         {
             j = 0;

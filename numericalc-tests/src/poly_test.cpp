@@ -4,6 +4,7 @@
 #include "numericalc/interpolation/lagrange.hpp"
 #include "numericalc/dft/dft.hpp"
 #include "numericalc/dft/fft.hpp"
+#include "numericalc/traits/compare_trait.hpp"
 #include <cmath>
 
 using namespace std;
@@ -24,7 +25,7 @@ int poly_test()
     size_t idx = 0;
     for(auto &l : ls)
         cout << "l_" << ++idx << " = " << l << endl;
-    cout << endl;
+    cout << "L = " << endl << lagrange_polynomial_matrix(grid) << endl;
 
     Polynomial<complex<double>> q(4, (complex<double> []){0, -1, 2, 3});
 
@@ -41,7 +42,14 @@ int poly_test()
     cout << "p = " << p << endl;
     cout << "r = " << r << endl;
     cout << "p * r = " << p * r << endl;
-    cout << "p * r = " << fft_mult(p, r) << endl;
+    cout << "p * r = " << fft_mult(p, r) << endl << endl;
+
+    cout << "1   " << (compare_trait<int>::eq(1, 1) ? "= " : "!=") << " 1" << endl
+         << "1.0 " << (compare_trait<double>::eq(1.0, 1.0 - 1e-16) ? "= " : "!=") << " 1.0 - 1e-16" << endl
+         << "1   " << (compare_trait<int>::eq(1, 2) ? "= " : "!=") << " 2" << endl
+         << "1.0 " << (compare_trait<double>::eq(1.0, 1.00000001) ? "= " : "!=") << " 1.00000001" << endl;
+
+    cout << compare_trait<complex<double>>::eq(complex<double>(1, 1), complex<double>(1, 1)) << endl;
 
     return 0;
 }
